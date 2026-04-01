@@ -24,7 +24,11 @@ This project combines:
 * Generative AI Agent
 
 To convert **raw Amazon data into strategic business intelligence.**
+## 🏗️ System Architecture
 
+<img width="1024" height="1536" alt="image" src="https://github.com/user-attachments/assets/c68c3d7d-9062-48d6-a170-b19682910568" />
+
+The system follows a multi-layer AI architecture consisting of data acquisition, NLP processing, autonomous intelligence, and presentation layers. Data flows from Amazon scraping to sentiment analysis, anomaly detection, and AI-generated strategic insights displayed in an interactive Streamlit dashboard.
 ---
 
 # 🎯 Project Highlights
