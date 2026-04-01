@@ -58,7 +58,7 @@ From your dashboard:
 * ₹3019 average price
 * 76.1% positive sentiment 
 
-![Market Overview](attachment\:market_overview.png)
+<img width="1907" height="787" alt="image" src="https://github.com/user-attachments/assets/9d00c2bc-6fdd-4ba9-ac40-361f1c098660" />
 
 ---
 
@@ -77,7 +77,8 @@ Example Insights:
 * American Tourister premium positioning
 * Vip highest pricing cluster 
 
-![Brand Comparison](attachment\:brand_comparison.png)
+<img width="1886" height="801" alt="image" src="https://github.com/user-attachments/assets/167eae26-a980-44f4-9e4d-a5bc3b1b5e60" />
+
 
 ---
 
@@ -97,7 +98,7 @@ Safari flagged with anomaly:
 
 > "High rating despite deep discounting — potential durability concerns" 
 
-![Product Drilldown](attachment\:product_drilldown.png)
+<img width="1868" height="991" alt="image" src="https://github.com/user-attachments/assets/5b42e8ec-24da-40e0-be25-26ec1b716927" />
 
 ---
 
@@ -115,7 +116,7 @@ Example Insights:
 * Nasher Miles overpriced warning
 * Premium positioning gaps detected 
 
-![AI Agent Insights](attachment\:ai_agent.png)
+<img width="1840" height="764" alt="image" src="https://github.com/user-attachments/assets/ca785922-eaef-4784-ae93-aecc09c167d8" />
 
 ---
 
