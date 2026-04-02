@@ -3,3 +3,4 @@ plotly
 pandas
 playwright
 textblob
+scikit-learn
