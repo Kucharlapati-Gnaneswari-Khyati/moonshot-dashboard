@@ -12,6 +12,27 @@
 ---
 
 ## 🚀 AI Agent Internship Assignment — Moonshot
+---
+
+# 🎯 Problem Statement
+
+Companies launching luggage products lack structured competitive intelligence.
+
+Competitor data exists across marketplaces like Amazon, but:
+
+- Pricing trends are unclear
+- Customer sentiment is scattered
+- Product strengths & weaknesses are hidden
+- Market gaps are difficult to identify
+
+This project solves this by building an AI-powered competitive intelligence dashboard that:
+
+- Collects competitor product data
+- Analyzes customer sentiment
+- Extracts product themes
+- Generates market insights
+
+This helps decision-makers understand where to compete and how to improve products.
 
 An **end-to-end AI-powered competitive intelligence platform** designed to analyze **pricing, sentiment, and competitive positioning** across top luggage brands on **Amazon India**.
 
@@ -269,7 +290,48 @@ final_dataset.csv
 reviews_with_sentiment.csv
 README.md
 ```
+# 📊 Cleaned Dataset
 
+The dashboard uses cleaned datasets generated from the pipeline:
+
+- final_dataset.csv
+- reviews_with_sentiment.csv
+
+Dataset includes:
+
+- Product Name
+- Brand
+- Price
+- Rating
+- Reviews
+- Sentiment Score
+- Extracted Themes
+
+These datasets are included in the repository and used directly by the dashboard.
+# 🧭 Project Approach
+
+The project follows an end-to-end AI competitive intelligence pipeline:
+
+1. Data Collection  
+Scrape competitor luggage products from Amazon India
+
+2. Data Cleaning  
+Remove duplicates and normalize pricing and ratings
+
+3. Sentiment Analysis  
+Perform aspect-level sentiment analysis on product reviews
+
+4. Theme Extraction  
+Extract customer pain points and strengths
+
+5. Competitive Intelligence  
+Compare brands across price, sentiment, and value
+
+6. Dashboard Visualization  
+Display insights in interactive Streamlit dashboard
+
+7. AI Agent Insights  
+Generate strategic recommendations using Gemini API
 ---
 
 # 🔍 Analytical Methodology
@@ -316,23 +378,67 @@ Identifies:
 
 # 💡 Business Impact
 
-This dashboard enables:
+This dashboard enables product and strategy teams to make data-driven decisions:
 
-* Competitive intelligence
-* Product strategy decisions
-* Pricing optimization
-* Market gap discovery
-* Customer pain-point detection
+## Product Strategy
+- Identify competitor strengths and weaknesses
+- Detect durability complaints and feature gaps
+- Improve hardware quality decisions
+
+## Pricing Strategy
+- Detect overpriced competitors
+- Identify value-for-money leaders
+- Optimize pricing positioning
+
+## Competitive Intelligence
+- Compare brands across sentiment and pricing
+- Identify premium vs budget clusters
+- Detect emerging challenger brands
+
+## Customer Insights
+- Understand customer pain points
+- Identify most discussed product features
+- Track sentiment trends across brands
+
+This transforms raw marketplace data into actionable business intelligence.
+---
+# ⚠️ Limitations
+
+- Dataset limited to selected luggage brands
+- Static scraping (not real-time monitoring)
+- Limited review sample size
+- Sentiment model based on rule-based VADER
+- No historical trend tracking
+- Amazon-only data source
+
+These limitations can be addressed in future iterations.
 
 ---
+# 🚀 Future Improvements
 
-# 🏁 Future Improvements
+## Real-Time Competitive Monitoring
+- Scheduled scraping
+- Daily competitor tracking
 
-* Real-time tracking
-* Multi-category expansion
-* Alert system
-* ML clustering
-* Demand forecasting
+## Multi-Marketplace Expansion
+- Flipkart
+- Myntra
+- Brand websites
+
+## Advanced AI Intelligence
+- LLM-based review summarization
+- Trend prediction
+- Market opportunity detection
+
+## Alert System
+- Competitor price drop alerts
+- Sentiment drop alerts
+- New product launch alerts
+
+## Advanced Analytics
+- ML clustering
+- Demand forecasting
+- Market share estimation
 
 ---
 
@@ -347,6 +453,20 @@ Unlike traditional dashboards:
 ✅ Strategic Intelligence
 
 ---
+# 📦 Submission Contents
+
+This submission includes:
+
+✅ Working Dashboard  
+✅ Source Code  
+✅ README with setup and approach  
+✅ Cleaned dataset  
+
+Recommended additions:
+
+✅ Architecture diagram  
+✅ Dashboard screenshots  
+✅ Notes on limitations and improvements  
 
 # 👩‍💻 Author
 
