@@ -309,7 +309,7 @@ with tab4:
         try:
             import google.generativeai as genai
             genai.configure(api_key=api_key)
-            model = gemini-1.5-flash-latest
+            model = model = genai.GenerativeModel("gemini-1.5-flash-latest")
             
             # Prepare context for the LLM
             data_context = comparison_df.to_csv()
