@@ -294,8 +294,11 @@ README.md
 
 The dashboard uses cleaned datasets generated from the pipeline:
 
-- final_dataset.csv
-- reviews_with_sentiment.csv
+- final_dataset.csv — Product data
+- reviews.csv — Generated reviews
+- reviews_with_sentiment.csv — Sentiment analysis results
+
+These datasets are used directly by the dashboard.
 
 Dataset includes:
 
