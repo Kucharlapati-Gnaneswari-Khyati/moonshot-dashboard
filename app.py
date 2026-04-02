@@ -302,45 +302,47 @@ with tab3:
 # TAB 4: True AI Agent Insights
 # -------------------------
 with tab4:
-    st.subheader("🤖 True AI Agent Insights")
+    st.subheader("🤖 AI Agent Insights")
     st.markdown("Synthesizing market data into actionable intelligence.")
-
-if api_key:
-    try:
-        from google import genai
-        
-        client = genai.Client(api_key=api_key)
-        
-        data_context = comparison_df.to_string()
-        
-        prompt = f"""
-        You are a senior Competitive Intelligence AI Agent. 
-        Analyze the following luggage market data:
-
-        {data_context}
-
-        Generate 5 highly strategic, non-obvious insights.
-        Focus on:
-        - Pricing strategy
-        - Discount positioning
-        - Sentiment trends
-        - Competitive threats
-        - Market opportunities
-        
-        Use bullet points.
-        """
-
-        with st.spinner("Agent is analyzing the market data..."):
-            response = client.models.generate_content(
-                model="gemini-1.5-flash",
-                contents=prompt
-            )
-
-            st.success("Analysis Complete.")
-            st.markdown(response.text)
-
-    except Exception as e:
-        st.error(f"Failed to connect to API. Error: {e}")    
+    
+    if api_key:
+        try:
+            from groq import Groq
+    
+            client = Groq(api_key=api_key)
+    
+            data_context = comparison_df.to_string()
+    
+            prompt = f"""
+            You are a Senior Competitive Intelligence AI Agent.
+    
+            Analyze the following luggage market data:
+    
+            {data_context}
+    
+            Generate 5 strategic insights:
+            - Pricing strategy
+            - Competitive threats
+            - Market gaps
+            - Discount patterns
+            - Brand positioning
+    
+            Be concise and actionable.
+            """
+    
+            with st.spinner("Agent is analyzing the market..."):
+                response = client.chat.completions.create(
+                    model="llama3-70b-8192",
+                    messages=[
+                        {"role": "user", "content": prompt}
+                    ]
+                )
+    
+                st.success("Analysis Complete")
+                st.markdown(response.choices[0].message.content)
+    
+        except Exception as e:
+            st.error(f"Failed to connect to API. Error: {e}")    
     if not api_key:
         st.info("💡 Enter your Gemini API key in the sidebar to generate dynamic LLM insights. Showing rule-based fallback below:")
         
