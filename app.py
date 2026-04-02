@@ -95,7 +95,7 @@ sentiment_stats = filtered_sentiment.groupby("Brand").agg(
     Total_Reviews=("Review", "count"),
     Sentiment_Score=("Sentiment", lambda x: ((x == "Positive").sum() / len(x)) * 10 if len(x) > 0 else 0)
 ).round(2).reset_index()
-
+all_counts = sentiment_stats["Total_Reviews"]
 comparison_df = pd.merge(brand_stats, sentiment_stats, on="Brand", how="left").fillna(0)
 comparison_df.set_index("Brand", inplace=True)
 
