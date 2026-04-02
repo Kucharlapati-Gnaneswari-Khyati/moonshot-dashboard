@@ -3,8 +3,7 @@ import pandas as pd
 import time
 
 print("Loading dataset...")
-# Make sure this matches the CSV your product scraper generated
-df = pd.read_csv("dataset.csv") 
+df = pd.read_csv("final_dataset.csv") 
 
 reviews_data = []
 
