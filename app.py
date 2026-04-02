@@ -92,7 +92,7 @@ brand_stats = filtered_df.groupby("Brand").agg(
 ).round(2).reset_index()
 
 sentiment_stats = filtered_sentiment.groupby("Brand").agg(
-    Total_Reviews=("Review", "count"),
+    global Total_Reviews=("Review", "count"),
     Sentiment_Score=("Sentiment", lambda x: ((x == "Positive").sum() / len(x)) * 10 if len(x) > 0 else 0)
 ).round(2).reset_index()
 
