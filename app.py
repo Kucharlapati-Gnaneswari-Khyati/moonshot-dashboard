@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
+import google.generativeai as genai
 from sklearn.feature_extraction.text import CountVectorizer, ENGLISH_STOP_WORDS
 
 # =========================
@@ -307,9 +308,10 @@ with tab4:
     if api_key:
         try:
             import google.generativeai as genai
-            genai.configure(api_key=api_key)
-            model = gemini-1.5-flash-latest
-            
+            # genai.configure(api_key=api_key)
+            # model = gemini-1.5-flash-latest
+            genai.configure(api_key=st.secrets["GOOGLE_API_KEY"])
+            model = genai.GenerativeModel('gemini-1.5-flash')
             # Prepare context for the LLM
             data_context = comparison_df.to_csv()
             prompt = f"""
