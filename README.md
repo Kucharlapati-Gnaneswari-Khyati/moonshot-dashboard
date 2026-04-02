@@ -141,7 +141,7 @@ Example Insights:
 * Nasher Miles overpriced warning
 * Premium positioning gaps detected 
 
-<img width="1840" height="764" alt="image" src="https://github.com/user-attachments/assets/ca785922-eaef-4784-ae93-aecc09c167d8" />
+<img width="1895" height="640" alt="image" src="https://github.com/user-attachments/assets/e0814a3b-3cb4-4d6f-bd36-5d45f7c606b0" />
 
 ---
 
