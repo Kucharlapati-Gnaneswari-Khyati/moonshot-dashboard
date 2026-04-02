@@ -14,7 +14,6 @@ st.title("🧳 Competitive Intelligence Dashboard")
 st.markdown("Analyze pricing, sentiment, and competitive positioning across Amazon India luggage brands.")
 st.divider()
 
-total_reviews = Total_Reviews=("Review", "count")
 # =========================
 # Load & Clean Data
 # =========================
@@ -231,12 +230,7 @@ with tab3:
     pc1.metric("Current Price", f"₹{int(prod_data['Price'])}")
     pc2.metric("Discount", f"{prod_data['Discount %']}%")
     pc3.metric("Star Rating", f"⭐ {prod_data['Rating']}")
-    rev_count = 0
-    if rev_count == 0 or pd.isna(rev_count):
-        rev_count = Total_Reviews
-    if rev_count == 0:
-        rev_count = 124 
-    pc4.metric("Total Reviews", rev_count)
+    pc4.metric("Total Reviews", int(prod_data['Review Count']))
 
     st.markdown("#### ⚠️ Trust & Anomaly Alerts")
     if prod_data['Rating'] >= 4.0 and prod_data['Discount %'] > 60:
