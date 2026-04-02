@@ -230,13 +230,7 @@ with tab3:
     pc1.metric("Current Price", f"₹{int(prod_data['Price'])}")
     pc2.metric("Discount", f"{prod_data['Discount %']}%")
     pc3.metric("Star Rating", f"⭐ {prod_data['Rating']}")
-    if not prod_data['Review Count'].empty:
-        try:
-            rev_count = prod_data['Review Count']
-        except (KeyError, ValueError):
-            rev_count = 0
-    else:
-        rev_count = 0
+    rev_count = 0
     if rev_count == 0 or pd.isna(rev_count):
         rev_count = len(df_reviews[df_reviews['Product'] == selected_product])
     if rev_count == 0:
