@@ -304,29 +304,22 @@ with tab3:
 with tab4:
     st.subheader("🤖 True AI Agent Insights")
     st.markdown("Synthesizing market data into actionable intelligence.")
-
     if api_key:
-         try:
+        try:
             from google import genai
-        
             client = genai.Client(api_key=api_key)
-        
             data_context = comparison_df.to_csv()
-        
             prompt = f"""
             You are a senior Competitive Intelligence AI Agent...
             {data_context}
             """
-        
             with st.spinner("Agent is analyzing the market data..."):
                 response = client.models.generate_content(
                     model="gemini-2.0-flash",
                     contents=prompt
                 )
-        
                 st.success("Analysis Complete.")
                 st.markdown(response.text)
-        
         except Exception as e:
             st.error(f"Failed to connect to API. Error: {e}")
     
