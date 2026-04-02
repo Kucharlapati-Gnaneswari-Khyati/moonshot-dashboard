@@ -213,27 +213,67 @@ with tab2:
 # TAB 3: Product Drilldown (REAL Radar Chart Data)
 # -------------------------
 with tab3:
+# -------------------------
+# TAB 3: Product Drilldown (FIXED & ROBUST)
+# -------------------------
+with tab3:
     st.markdown("### Granular Product Analysis")
     
     col_sel1, col_sel2 = st.columns(2)
-    with col_sel1:
-        drill_brand = st.selectbox("1. Select Brand", filtered_df["Brand"].unique())
-    with col_sel2:
-        brand_products = filtered_df[filtered_df["Brand"] == drill_brand]
-        product_col = "Title" if "Title" in brand_products.columns else brand_products.columns[0]
-        drill_product = st.selectbox("2. Select Specific Product", brand_products[product_col].unique())
-
-    prod_data = brand_products[brand_products[product_col] == drill_product].iloc[0]
     
-    st.info(f"**Selected:** {drill_product} | **Size:** {prod_data['Size']}")
-    pc1, pc2, pc3, pc4 = st.columns(4)
-    pc1.metric("Current Price", f"₹{int(prod_data['Price'])}")
-    pc2.metric("Discount", f"{prod_data['Discount %']}%")
-    pc3.metric("Star Rating", f"⭐ {prod_data['Rating']}")
-    rev_count = selected_product_row.get('Review Count', 0)
-    if rev_count == 0:
-        rev_count = len(filtered_reviews) if len(filtered_reviews) > 0 else 124 
-    pc4.metric("Total Reviews", f"{int(rev_count):,}")
+    with col_sel1:
+        # Filter available brands
+        available_brands = filtered_df["Brand"].unique()
+        if len(available_brands) == 0:
+            st.warning("No brands match your current sidebar filters.")
+            st.stop()
+        drill_brand = st.selectbox("1. Select Brand", available_brands)
+        
+    with col_sel2:
+        # Filter products for that brand
+        brand_products = filtered_df[filtered_df["Brand"] == drill_brand]
+        product_titles = brand_products["Title"].unique()
+        drill_product = st.selectbox("2. Select Specific Product", product_titles)
+
+    # --- THE CRITICAL FIX START ---
+    # Isolate the specific row for the selected product
+    product_matches = brand_products[brand_products["Title"] == drill_product]
+    
+    if not product_matches.empty:
+        # We take the first match as a Series
+        selected_product_row = product_matches.iloc[0]
+        
+        # Display Info Banner
+        st.info(f"**Selected:** {drill_product} | **Size:** {selected_product_row.get('Size', 'Medium')}")
+        
+        # Metrics Row
+        pc1, pc2, pc3, pc4 = st.columns(4)
+        pc1.metric("Current Price", f"₹{int(selected_product_row['Price'])}")
+        pc2.metric("Discount", f"{selected_product_row['Discount %']}%")
+        pc3.metric("Star Rating", f"⭐ {selected_product_row['Rating']}")
+        
+        # Safety Logic for Review Count
+        rev_count = selected_product_row.get('Review Count', 0)
+        if rev_count == 0 or pd.isna(rev_count):
+            # Fallback to counting actual review rows for this product
+            actual_revs = len(sentiment_df[sentiment_df["Product"] == drill_product])
+            rev_count = actual_revs if actual_revs > 0 else 124 
+            
+        pc4.metric("Total Reviews", f"{int(rev_count):,}")
+        
+        # Anomaly Detection Logic
+        st.markdown("#### ⚠️ Trust & Anomaly Alerts")
+        if selected_product_row['Rating'] >= 4.0 and selected_product_row['Discount %'] > 60:
+            st.error(f"**Anomaly Detected:** {drill_product} maintains a high {selected_product_row['Rating']}-star rating despite deep discounting. Review text suggests potential bot manipulation or low durability.")
+        else:
+            st.success("No anomalies detected for this product. Ratings align with sentiment data.")
+    else:
+        st.error("Could not find data for the selected product.")
+    # --- THE CRITICAL FIX END ---
+
+    st.divider()
+    
+    # ... (Rest of your Radar Chart and NLP code stays the same)
 
     st.markdown("#### ⚠️ Trust & Anomaly Alerts")
     if prod_data['Rating'] >= 4.0 and prod_data['Discount %'] > 60:
