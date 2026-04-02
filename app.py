@@ -232,7 +232,7 @@ with tab3:
     pc3.metric("Star Rating", f"⭐ {prod_data['Rating']}")
     rev_count = 0
     if rev_count == 0 or pd.isna(rev_count):
-        rev_count = len(df_reviews[df_reviews['Product'] == selected_product])
+        rev_count = Total_Reviews
     if rev_count == 0:
         rev_count = 124 
     pc4.metric("Total Reviews", rev_count)
