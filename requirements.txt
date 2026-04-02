@@ -5,3 +5,4 @@ playwright
 textblob
 scikit-learn
 google-generativeai
+google-genai
