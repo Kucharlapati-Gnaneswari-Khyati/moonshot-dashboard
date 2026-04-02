@@ -14,6 +14,7 @@ st.title("🧳 Competitive Intelligence Dashboard")
 st.markdown("Analyze pricing, sentiment, and competitive positioning across Amazon India luggage brands.")
 st.divider()
 
+total_reviews = 1
 # =========================
 # Load & Clean Data
 # =========================
