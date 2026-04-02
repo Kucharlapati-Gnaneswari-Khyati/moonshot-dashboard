@@ -3,7 +3,6 @@ import pandas as pd
 import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
-import google.generativeai as genai
 from sklearn.feature_extraction.text import CountVectorizer, ENGLISH_STOP_WORDS
 
 # =========================
@@ -66,7 +65,7 @@ with st.sidebar:
 
     st.divider()
     st.markdown("### 🤖 Agent Setup")
-    api_key = st.text_input("Gemini API Key (For Tab 4)", type="password", help="Enter your Google Gemini API key to enable dynamic AI insights.")
+    api_key = st.text_input("Groq API Key (For Tab 4)", type="password", help="Enter your Groq API key to enable dynamic AI insights.")
 
 # Apply Filters
 filtered_df = df[
@@ -344,7 +343,7 @@ with tab4:
         except Exception as e:
             st.error(f"Failed to connect to API. Error: {e}")    
     if not api_key:
-        st.info("💡 Enter your Gemini API key in the sidebar to generate dynamic LLM insights. Showing rule-based fallback below:")
+        st.info("💡 Enter your Groq API key in the sidebar to generate dynamic LLM insights. Showing rule-based fallback below:")
         
         price_rank = comparison_df["Avg_Price"].rank()
         sentiment_rank = comparison_df["Sentiment_Score"].rank()
