@@ -41,7 +41,7 @@ for brand in brands:
             "List Price": list_price,
             "Discount %": discount,
             "Rating": rating,
-            "Review Count": random.randint(100, 3000),
+            "Review Count": random.randint(150, 2500),
             "Link": "https://www.amazon.in"
         })
         
