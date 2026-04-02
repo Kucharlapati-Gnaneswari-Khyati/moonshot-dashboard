@@ -233,7 +233,7 @@ with tab3:
     rev_count = selected_product_row.get('Review Count', 0)
     if rev_count == 0:
         rev_count = len(filtered_reviews) if len(filtered_reviews) > 0 else 124 
-    pc4.metric("Total Reviews", f"{int(rev_count):,}"))
+    pc4.metric("Total Reviews", f"{int(rev_count):,}")
 
     st.markdown("#### ⚠️ Trust & Anomaly Alerts")
     if prod_data['Rating'] >= 4.0 and prod_data['Discount %'] > 60:
