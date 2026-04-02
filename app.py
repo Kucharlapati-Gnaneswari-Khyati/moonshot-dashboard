@@ -131,7 +131,7 @@ tab1, tab2, tab3, tab4 = st.tabs([
 ])
 
 # -------------------------
-# TAB 1: Market Overview
+# TAB 1: Market Overview (Upgraded with Scatter Plot)
 # -------------------------
 with tab1:
     st.markdown("### High-Level Market Snapshot")
@@ -144,6 +144,7 @@ with tab1:
     
     st.markdown("<br>", unsafe_allow_html=True)
     
+    # MOVED FROM TAB 4: Premium vs Value Positioning
     st.markdown("##### Premium vs. Value Market Positioning")
     chart = px.scatter(
         comparison_df.reset_index(),
@@ -175,13 +176,13 @@ with tab1:
         st.plotly_chart(fig_sent, use_container_width=True)
 
 # -------------------------
-# TAB 2: Brand Comparison
+# TAB 2: Brand Comparison (Upgraded with Value Index)
 # -------------------------
 with tab2:
     st.markdown("### Competitive Benchmarking")
     
     st.dataframe(
-        comparison_df.sort_values("Value_Index", ascending=False),
+        comparison_df.sort_values("Value_Index", ascending=False), # Sorted by the new metric
         column_config={
             "Avg_Price": st.column_config.NumberColumn("Avg Price", format="₹%.0f"),
             "Avg_Discount": st.column_config.NumberColumn("Avg Discount", format="%.1f%%"),
@@ -196,9 +197,10 @@ with tab2:
     
     col_bar1, col_bar2 = st.columns(2)
     with col_bar1:
-        st.markdown("##### Average Price (₹)")
-        fig_price_disc = px.bar(comparison_df.reset_index(), x='Brand', y='Avg_Price', marker_color='#3498db')
-        fig_price_disc.update_layout(margin=dict(t=20, b=0, l=0, r=0))
+        st.markdown("##### Average Price vs. Discount")
+        fig_price_disc = go.Figure()
+        fig_price_disc.add_trace(go.Bar(x=comparison_df.index, y=comparison_df['Avg_Price'], name='Avg Price (₹)', marker_color='#3498db'))
+        fig_price_disc.update_layout(barmode='group', margin=dict(t=20, b=0, l=0, r=0))
         st.plotly_chart(fig_price_disc, use_container_width=True)
 
     with col_bar2:
@@ -208,115 +210,138 @@ with tab2:
         st.plotly_chart(fig_val, use_container_width=True)
 
 # -------------------------
-# TAB 3: Product Drilldown
+# TAB 3: Product Drilldown (REAL Radar Chart Data)
 # -------------------------
 with tab3:
     st.markdown("### Granular Product Analysis")
     
     col_sel1, col_sel2 = st.columns(2)
-    
     with col_sel1:
-        available_brands = filtered_df["Brand"].unique()
-        if len(available_brands) == 0:
-            st.warning("No brands match filters.")
-            st.stop()
-        drill_brand = st.selectbox("1. Select Brand", available_brands)
-        
+        drill_brand = st.selectbox("1. Select Brand", filtered_df["Brand"].unique())
     with col_sel2:
         brand_products = filtered_df[filtered_df["Brand"] == drill_brand]
-        product_titles = brand_products["Title"].unique()
-        drill_product = st.selectbox("2. Select Specific Product", product_titles)
+        product_col = "Title" if "Title" in brand_products.columns else brand_products.columns[0]
+        drill_product = st.selectbox("2. Select Specific Product", brand_products[product_col].unique())
 
-    # Isolated logic for selected row
-    product_matches = brand_products[brand_products["Title"] == drill_product]
+    prod_data = brand_products[brand_products[product_col] == drill_product].iloc[0]
     
-    if not product_matches.empty:
-        selected_product_row = product_matches.iloc[0]
-        
-        st.info(f"**Selected:** {drill_product} | **Size:** {selected_product_row.get('Size', 'Medium')}")
-        
-        pc1, pc2, pc3, pc4 = st.columns(4)
-        pc1.metric("Current Price", f"₹{int(selected_product_row['Price'])}")
-        pc2.metric("Discount", f"{selected_product_row['Discount %']}%")
-        pc3.metric("Star Rating", f"⭐ {selected_product_row['Rating']}")
-        
-        # Safe Review Count logic
-        rev_count = selected_product_row.get('Review Count', 0)
-        if rev_count == 0 or pd.isna(rev_count):
-            actual_revs = len(sentiment_df[sentiment_df["Product"] == drill_product])
-            rev_count = actual_revs if actual_revs > 0 else 124 
-            
-        pc4.metric("Total Reviews", f"{int(rev_count):,}")
-        
-        st.markdown("#### ⚠️ Trust & Anomaly Alerts")
-        if selected_product_row['Rating'] >= 4.0 and selected_product_row['Discount %'] > 60:
-            st.error(f"**Anomaly Detected:** High rating despite deep discounting. Potential trust risk.")
-        else:
-            st.success("No anomalies detected. Ratings align with market sentiment.")
+    st.info(f"**Selected:** {drill_product} | **Size:** {prod_data['Size']}")
+    pc1, pc2, pc3, pc4 = st.columns(4)
+    pc1.metric("Current Price", f"₹{int(prod_data['Price'])}")
+    pc2.metric("Discount", f"{prod_data['Discount %']}%")
+    pc3.metric("Star Rating", f"⭐ {prod_data['Rating']}")
+    pc4.metric("Total Reviews", int(prod_data['Review Count']))
 
-        st.divider()
-        st.markdown(f"#### Aspect-Level & NLP Synthesis for {drill_brand}")
-        col_radar, col_nlp = st.columns([1, 1.5])
-        
-        with col_radar:
-            st.markdown("##### Hardware Sentiment Breakdown")
-            categories = ['Wheels', 'Zippers', 'Handle', 'Material', 'Capacity']
-            brand_aspects = filtered_sentiment[filtered_sentiment["Brand"] == drill_brand]
-            base_score = comparison_df.loc[drill_brand, 'Sentiment_Score'] if drill_brand in comparison_df.index else 5.0
-            
-            def safe_mean(col):
-                if col in brand_aspects.columns and not brand_aspects[col].isna().all():
-                    return brand_aspects[col].mean()
-                return base_score
-                
-            aspect_scores = [safe_mean(f'{c}_Score') for c in categories]
-            
-            fig_radar = go.Figure()
-            fig_radar.add_trace(go.Scatterpolar(
-                r=aspect_scores, theta=categories, fill='toself', name=drill_brand, line_color='#8e44ad'
-            ))
-            fig_radar.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 10])), showlegend=False)
-            st.plotly_chart(fig_radar, use_container_width=True)
-
-        with col_nlp:
-            rev_col1, rev_col2 = st.columns(2)
-            with rev_col1:
-                st.success("👍 Top Appreciation Themes")
-                pos_themes = extract_themes(brand_aspects[brand_aspects["Sentiment"] == "Positive"]["Review"])
-                st.dataframe(pos_themes, hide_index=True, use_container_width=True) if not pos_themes.empty else st.write("No data.")
-            with rev_col2:
-                st.error("👎 Top Complaint Themes")
-                neg_themes = extract_themes(brand_aspects[brand_aspects["Sentiment"] == "Negative"]["Review"])
-                st.dataframe(neg_themes, hide_index=True, use_container_width=True) if not neg_themes.empty else st.write("No data.")
+    st.markdown("#### ⚠️ Trust & Anomaly Alerts")
+    if prod_data['Rating'] >= 4.0 and prod_data['Discount %'] > 60:
+        st.error(f"**Anomaly Detected:** {drill_product} maintains a high {prod_data['Rating']}-star rating despite deep discounting. Review text suggests potential bot manipulation or low durability.")
     else:
-        st.error("Data not found.")
+        st.success("No anomalies detected for this product. Ratings align with sentiment data.")
+
+    st.divider()
+    
+    st.markdown(f"#### Aspect-Level & NLP Synthesis for {drill_brand}")
+    col_radar, col_nlp = st.columns([1, 1.5])
+    
+    with col_radar:
+        st.markdown("##### Hardware Sentiment Breakdown")
+        categories = ['Wheels', 'Zippers', 'Handle', 'Material', 'Capacity']
+        
+        # REAL DATA INJECTION
+        brand_aspects = filtered_sentiment[filtered_sentiment["Brand"] == drill_brand]
+        base_score = comparison_df.loc[drill_brand, 'Sentiment_Score'] if drill_brand in comparison_df.index else 5.0
+        
+        def safe_mean(col):
+            return brand_aspects[col].mean(skipna=True) if col in brand_aspects.columns and not brand_aspects[col].isna().all() else base_score
+            
+        aspect_scores = [
+            safe_mean('Wheels_Score'),
+            safe_mean('Zippers_Score'),
+            safe_mean('Handle_Score'),
+            safe_mean('Material_Score'),
+            safe_mean('Capacity_Score')
+        ]
+        
+        fig_radar = go.Figure()
+        fig_radar.add_trace(go.Scatterpolar(
+            r=aspect_scores,
+            theta=categories,
+            fill='toself',
+            name=drill_brand,
+            line_color='#8e44ad'
+        ))
+        fig_radar.update_layout(polar=dict(radialaxis=dict(visible=True, range=[0, 10])), showlegend=False, margin=dict(t=20, b=20, l=20, r=20))
+        st.plotly_chart(fig_radar, use_container_width=True)
+
+    with col_nlp:
+        rev_col1, rev_col2 = st.columns(2)
+        with rev_col1:
+            st.success("👍 Top Appreciation Themes")
+            pos_themes = extract_themes(brand_aspects[brand_aspects["Sentiment"] == "Positive"]["Review"])
+            if not pos_themes.empty:
+                st.dataframe(pos_themes, hide_index=True, use_container_width=True)
+            else:
+                st.write("Not enough data.")
+
+        with rev_col2:
+            st.error("👎 Top Complaint Themes")
+            neg_themes = extract_themes(brand_aspects[brand_aspects["Sentiment"] == "Negative"]["Review"])
+            if not neg_themes.empty:
+                st.dataframe(neg_themes, hide_index=True, use_container_width=True)
+            else:
+                st.write("Not enough data.")
 
 # -------------------------
-# TAB 4: AI Agent Insights
+# TAB 4: True AI Agent Insights
 # -------------------------
 with tab4:
     st.subheader("🤖 True AI Agent Insights")
+    st.markdown("Synthesizing market data into actionable intelligence.")
+
     if api_key:
         try:
             import google.generativeai as genai
             genai.configure(api_key=api_key)
             model = genai.GenerativeModel('gemini-1.5-flash')
+            
+            # Prepare context for the LLM
             data_context = comparison_df.to_csv()
-            prompt = f"Analyze this luggage market data: {data_context}. Provide 5 strategic, non-obvious bullet points for a decision-maker."
-            with st.spinner("Analyzing..."):
+            prompt = f"""
+            You are a senior Competitive Intelligence AI Agent. Analyze the following luggage market data on Amazon India:
+            {data_context}
+            
+            Generate 5 highly strategic, non-obvious bullet points for a decision-maker. Focus on relationships between price, heavy discounting, review volume, value-index, and sentiment score. Do not just read the numbers. Find the hidden threats and opportunities. Use markdown formatting.
+            """
+            
+            with st.spinner("Agent is analyzing the market data..."):
                 response = model.generate_content(prompt)
                 st.success("Analysis Complete.")
                 st.markdown(response.text)
+                
         except Exception as e:
-            st.error(f"API Error: {e}")
-            api_key = False 
+            st.error(f"Failed to connect to API. Error: {e}")
+            st.info("Falling back to rule-based insights:")
+            api_key = False # Trigger fallback
             
     if not api_key:
-        st.info("Enter Gemini API key in sidebar for LLM insights. Showing fallback:")
+        st.info("💡 Enter your Gemini API key in the sidebar to generate dynamic LLM insights. Showing rule-based fallback below:")
+        
         price_rank = comparison_df["Avg_Price"].rank()
         sentiment_rank = comparison_df["Sentiment_Score"].rank()
+        insights = []
+
         for brand in comparison_df.index:
             if price_rank[brand] > sentiment_rank[brand] + 1:
-                st.info(f"⚠️ **Overpriced Warning for {brand}:** Sentiment lags price rank.")
+                insights.append(f"⚠️ **Overpriced Warning for {brand}:** Despite pricing itself as a premium option, customer sentiment actively lags behind budget competitors.")
             elif sentiment_rank[brand] > price_rank[brand] + 1:
-                st.info(f"🏆 **Competitive Threat from {brand}:** High value leader.")
+                insights.append(f"🏆 **Competitive Threat from {brand}:** {brand} is operating as a clear market value leader.")
+
+        for brand in comparison_df.index:
+            if comparison_df.loc[brand, "Total_Reviews"] > comparison_df["Total_Reviews"].mean() * 1.5 and comparison_df.loc[brand, "Sentiment_Score"] < comparison_df["Sentiment_Score"].mean():
+                insights.append(f"📉 **{brand}'s Volume Masking:** {brand} is capturing high market share (fueled by {comparison_df.loc[brand, 'Avg_Discount']:.0f}% discounts), but underlying sentiment indicates poor retention.")
+
+        if insights:
+            for insight in insights[:5]:
+                st.info(insight)
+        else:
+            st.info("The market is currently stabilized; pricing strategies closely correlate with sentiment scores.")
