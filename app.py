@@ -231,9 +231,9 @@ with tab3:
     pc2.metric("Discount", f"{prod_data['Discount %']}%")
     pc3.metric("Star Rating", f"⭐ {prod_data['Rating']}")
     rev_count = selected_product_row.get('Review Count', 0)
-        if rev_count == 0 or pd.isna(rev_count):
-            actual_revs = len(sentiment_df[sentiment_df["Product"] == drill_product])
-            rev_count = actual_revs if actual_revs > 0 else 124
+    if rev_count == 0 or pd.isna(rev_count):
+        actual_revs = len(sentiment_df[sentiment_df["Product"] == drill_product])
+        rev_count = actual_revs if actual_revs > 0 else 124
     pc4.metric("Total Reviews", int(prod_data['Review Count']))
 
     st.markdown("#### ⚠️ Trust & Anomaly Alerts")
