@@ -306,30 +306,30 @@ with tab4:
     st.markdown("Synthesizing market data into actionable intelligence.")
 
     if api_key:
-        try:
-            import google.generativeai as genai
-            genai.configure(api_key=api_key)
-            model = model = genai.GenerativeModel("gemini-1.5-flash")
-            
-            # Prepare context for the LLM
+         try:
+            from google import genai
+        
+            client = genai.Client(api_key=api_key)
+        
             data_context = comparison_df.to_csv()
+        
             prompt = f"""
-            You are a senior Competitive Intelligence AI Agent. Analyze the following luggage market data on Amazon India:
+            You are a senior Competitive Intelligence AI Agent...
             {data_context}
-            
-            Generate 5 highly strategic, non-obvious bullet points for a decision-maker. Focus on relationships between price, heavy discounting, review volume, value-index, and sentiment score. Do not just read the numbers. Find the hidden threats and opportunities. Use markdown formatting.
             """
-            
+        
             with st.spinner("Agent is analyzing the market data..."):
-                response = model.generate_content(prompt)
+                response = client.models.generate_content(
+                    model="gemini-2.0-flash",
+                    contents=prompt
+                )
+        
                 st.success("Analysis Complete.")
                 st.markdown(response.text)
-                
+        
         except Exception as e:
             st.error(f"Failed to connect to API. Error: {e}")
-            st.info("Falling back to rule-based insights:")
-            api_key = False # Trigger fallback
-            
+    
     if not api_key:
         st.info("💡 Enter your Gemini API key in the sidebar to generate dynamic LLM insights. Showing rule-based fallback below:")
         
