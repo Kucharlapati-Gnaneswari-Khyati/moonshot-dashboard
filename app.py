@@ -14,7 +14,7 @@ st.title("🧳 Competitive Intelligence Dashboard")
 st.markdown("Analyze pricing, sentiment, and competitive positioning across Amazon India luggage brands.")
 st.divider()
 
-total_reviews = 1
+total_reviews = Total_Reviews=("Review", "count")
 # =========================
 # Load & Clean Data
 # =========================
@@ -93,7 +93,7 @@ brand_stats = filtered_df.groupby("Brand").agg(
 ).round(2).reset_index()
 
 sentiment_stats = filtered_sentiment.groupby("Brand").agg(
-    global Total_Reviews=("Review", "count"),
+    Total_Reviews=("Review", "count"),
     Sentiment_Score=("Sentiment", lambda x: ((x == "Positive").sum() / len(x)) * 10 if len(x) > 0 else 0)
 ).round(2).reset_index()
 
