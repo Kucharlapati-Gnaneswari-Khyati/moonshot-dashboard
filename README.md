@@ -1,4 +1,4 @@
-# 🧠 Moonshot Luggage Competitive Intelligence Dashboard
+# 🧠 Munshot Luggage Competitive Intelligence Dashboard
 
 ![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red.svg)
