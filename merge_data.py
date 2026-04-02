@@ -1,6 +1,6 @@
 import pandas as pd
 
-products = pd.read_csv("dataset.csv")
+products = pd.read_csv("final_dataset.csv")
 reviews = pd.read_csv("reviews_with_sentiment.csv")
 
 merged = pd.merge(
