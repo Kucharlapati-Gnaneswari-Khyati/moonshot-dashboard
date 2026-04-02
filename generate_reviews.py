@@ -1,7 +1,7 @@
 import pandas as pd
 import random
 
-df = pd.read_csv("dataset.csv")
+df = pd.read_csv("final_dataset.csv")
 
 positive = [
     "Very durable and good quality",
