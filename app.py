@@ -230,7 +230,7 @@ with tab3:
     pc1.metric("Current Price", f"₹{int(prod_data['Price'])}")
     pc2.metric("Discount", f"{prod_data['Discount %']}%")
     pc3.metric("Star Rating", f"⭐ {prod_data['Rating']}")
-    pc4.metric("Total Reviews", int(prod_data['Review Count']))
+    pc4.metric("Total Reviews", prod_data['Review Count'])
 
     st.markdown("#### ⚠️ Trust & Anomaly Alerts")
     if prod_data['Rating'] >= 4.0 and prod_data['Discount %'] > 60:
