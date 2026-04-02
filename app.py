@@ -230,7 +230,7 @@ with tab3:
     pc1.metric("Current Price", f"₹{int(prod_data['Price'])}")
     pc2.metric("Discount", f"{prod_data['Discount %']}%")
     pc3.metric("Star Rating", f"⭐ {prod_data['Rating']}")
-    if not selected_product_row.empty:
+    if not selected_product_row['Review Count'].empty:
         try:
             rev_count = selected_product_row['Review Count']
         except (KeyError, ValueError):
