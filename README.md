@@ -123,7 +123,7 @@ Safari flagged with anomaly:
 
 > "High rating despite deep discounting — potential durability concerns" 
 
-<img width="1868" height="991" alt="image" src="https://github.com/user-attachments/assets/5b42e8ec-24da-40e0-be25-26ec1b716927" />
+<img width="1865" height="752" alt="image" src="https://github.com/user-attachments/assets/89c7c3d2-b80a-4d15-81c0-200a5a2277cb" />
 
 ---
 
