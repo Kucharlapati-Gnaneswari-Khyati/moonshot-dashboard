@@ -227,17 +227,14 @@ with tab3:
     
     st.info(f"**Selected:** {drill_product} | **Size:** {prod_data['Size']}")
     pc1, pc2, pc3, pc4 = st.columns(4)
-    pc1.metric("Current Price", f"₹{int(selected_product_row['Price'])}")
-    pc2.metric("Discount", f"{selected_product_row['Discount %']}%")
-    pc3.metric("Star Rating", f"⭐ {selected_product_row['Rating']}")
-    rev_count = selected_product_row.get('Review Count', 0)
-    if rev_count == 0 or pd.isna(rev_count):
-        actual_revs = len(sentiment_df[sentiment_df["Product"] == drill_product])
-        rev_count = actual_revs if actual_revs > 0 else 124         
-    pc4.metric("Total Reviews", f"{int(rev_count):,}")
+    pc1.metric("Current Price", f"₹{int(prod_data['Price'])}")
+    pc2.metric("Discount", f"{prod_data['Discount %']}%")
+    pc3.metric("Star Rating", f"⭐ {prod_data['Rating']}")
+    pc4.metric("Total Reviews", int(prod_data['Review Count']))
+
     st.markdown("#### ⚠️ Trust & Anomaly Alerts")
-    if selected_product_row['Rating'] >= 4.0 and selected_product_row['Discount %'] > 60:
-        st.error(f"**Anomaly Detected:** {drill_product} maintains a high {selected_product_row['Rating']}-star rating despite deep discounting. Review text suggests potential bot manipulation or low durability.")
+    if prod_data['Rating'] >= 4.0 and prod_data['Discount %'] > 60:
+        st.error(f"**Anomaly Detected:** {drill_product} maintains a high {prod_data['Rating']}-star rating despite deep discounting. Review text suggests potential bot manipulation or low durability.")
     else:
         st.success("No anomalies detected for this product. Ratings align with sentiment data.")
 
