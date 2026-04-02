@@ -107,7 +107,6 @@ with sync_playwright() as p:
 df = pd.DataFrame(data)
 
 if len(df) > 0:
-    df.to_csv("dataset.csv", index=False)
     df.to_csv("final_dataset.csv", index=False)
     print(f"\n✅ Scraping complete! {len(df)} products saved with valid links.")
 else:
