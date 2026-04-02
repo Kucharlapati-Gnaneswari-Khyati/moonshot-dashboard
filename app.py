@@ -213,10 +213,6 @@ with tab2:
 # TAB 3: Product Drilldown (REAL Radar Chart Data)
 # -------------------------
 with tab3:
-# -------------------------
-# TAB 3: Product Drilldown (FIXED & ROBUST)
-# -------------------------
-with tab3:
     st.markdown("### Granular Product Analysis")
     
     col_sel1, col_sel2 = st.columns(2)
