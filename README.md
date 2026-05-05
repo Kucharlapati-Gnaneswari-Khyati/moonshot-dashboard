@@ -4,7 +4,7 @@
 ![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-red.svg)
 ![NLP](https://img.shields.io/badge/NLP-Aspect%20Sentiment-green.svg)
 ![AI Agent](https://img.shields.io/badge/AI-Agent%20Powered-purple.svg)
-![Grok](https://img.shields.io/badge/Grok%20API-orange.svg)
+![Groq](https://img.shields.io/badge/Groq%20API-orange.svg)
 ![Playwright](https://img.shields.io/badge/Scraping-Playwright-blue)
 ![Plotly](https://img.shields.io/badge/Charts-Plotly-yellow)
 ![Status](https://img.shields.io/badge/Status-Production%20Ready-brightgreen)
